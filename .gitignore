@@ -1,0 +1,26 @@
+# OS Files
+.DS_Store
+Thumbs.db
+*.swp
+
+# IDEs
+.idea/
+.vscode/
+*.iml
+
+# Node
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Java
+target/
+*.class
+
+# Logs
+logs/
+*.log
+
+# Environment Variables
+.env
+.env.local
