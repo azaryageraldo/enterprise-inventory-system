@@ -11,9 +11,6 @@ ROLE 1: ADMIN
    - Reset kata sandi
    - Tentukan peran pengguna
 
-2. Kelola Hak Akses
-   - Atur menu yang boleh diakses tiap peran
-   - Batasi menu tertentu
 
 3. Kelola Data Awal
    - Kategori barang
