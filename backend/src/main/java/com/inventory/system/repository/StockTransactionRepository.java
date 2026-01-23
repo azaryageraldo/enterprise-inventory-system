@@ -8,4 +8,8 @@ public interface StockTransactionRepository extends JpaRepository<StockTransacti
     List<StockTransaction> findByItemIdOrderByDateDesc(Long itemId);
 
     List<StockTransaction> findAllByOrderByDateDesc();
+
+    List<StockTransaction> findTop5ByUserIdOrderByDateDesc(Long userId);
+
+    long countByUserId(Long userId);
 }

@@ -35,5 +35,8 @@ public class ExpenseRequest {
 
     private LocalDateTime approvalDate;
 
-    private String evidenceImage; // Path to image
+    private String evidenceImage; // Path to image or Link
+
+    @Column(length = 20)
+    private String evidenceType; // "LINK", "FILE"
 }

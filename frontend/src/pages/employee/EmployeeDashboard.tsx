@@ -5,29 +5,61 @@ import { useAuthStore } from "@/store/authStore";
 import { format } from "date-fns";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { useEffect, useState } from "react";
+import api from "@/lib/api";
+import { id as localeId } from "date-fns/locale";
+
+interface DashboardStats {
+    totalStockTransactions: number;
+    pendingExpenses: number;
+    approvedExpensesSum: number;
+    recentStockTransactions: Array<{
+        id: number;
+        item: { name: string };
+        date: string;
+        quantity: number;
+        type: string;
+    }>;
+}
 
 export default function EmployeeDashboard() {
   const { user } = useAuthStore();
+  const [stats, setStats] = useState<DashboardStats | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchStats = async () => {
+        try {
+            const response = await api.get("/employee/dashboard");
+            setStats(response.data);
+        } catch (error) {
+            console.error("Failed to fetch dashboard stats", error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+    fetchStats();
+  }, []);
 
   const quickStats = [
     {
-      title: "Permintaan Saya",
-      value: "12",
-      label: "Total barang diminta",
+      title: "Riwayat Transaksi",
+      value: stats?.totalStockTransactions.toString() || "0",
+      label: "Total transaksi barang",
       icon: Package,
       color: "bg-blue-50 text-blue-600 border-blue-100",
     },
     {
-        title: "Menunggu Persetujuan",
-        value: "3",
-        label: "Menunggu tinjauan",
+        title: "Klaim Tertunda",
+        value: stats?.pendingExpenses.toString() || "0",
+        label: "Menunggu persetujuan",
         icon: Clock,
         color: "bg-amber-50 text-amber-600 border-amber-100",
     },
     {
-        title: "Pengeluaran Disetujui",
-        value: "Rb 1.2Jt",
-        label: "Bulan ini",
+        title: "Klaim Disetujui",
+        value: stats ? `Rp ${(stats.approvedExpensesSum || 0).toLocaleString('id-ID')}` : "Rp 0",
+        label: "Total disetujui",
         icon: CheckCircle2,
         color: "bg-emerald-50 text-emerald-600 border-emerald-100",
     },
@@ -43,7 +75,7 @@ export default function EmployeeDashboard() {
           </h1>
           <p className="text-slate-500 mt-2 flex items-center gap-2">
             <CalendarDays className="w-4 h-4" />
-            {format(new Date(), "EEEE, d MMMM yyyy")}
+            {format(new Date(), "EEEE, d MMMM yyyy", { locale: localeId })}
             <span className="hidden md:inline text-slate-300">|</span>
             <span className="hidden md:inline">Siap memulai hari Anda?</span>
           </p>
@@ -52,13 +84,13 @@ export default function EmployeeDashboard() {
             <Button className="bg-emerald-600 hover:bg-emerald-700 text-white shadow-md hover:shadow-lg transition-all" asChild>
                 <Link to="/employee/inventory">
                     <Plus className="w-4 h-4 mr-2" />
-                    Permintaan Baru
+                    Ambil Barang
                 </Link>
             </Button>
             <Button variant="outline" className="border-emerald-200 text-emerald-700 hover:bg-emerald-50" asChild>
                 <Link to="/employee/expenses">
                     <Plus className="w-4 h-4 mr-2" />
-                    Ajukan Pengeluaran
+                    Ajukan Klaim
                 </Link>
             </Button>
         </div>
@@ -72,7 +104,7 @@ export default function EmployeeDashboard() {
                     <div className="flex items-start justify-between">
                         <div>
                             <p className="text-sm font-medium text-slate-500">{stat.title}</p>
-                            <h3 className="text-3xl font-bold text-slate-900 mt-2">{stat.value}</h3>
+                            <h3 className="text-3xl font-bold text-slate-900 mt-2">{isLoading ? "..." : stat.value}</h3>
                             <p className="text-xs text-slate-400 mt-1">{stat.label}</p>
                         </div>
                         <div className={`p-3 rounded-xl ${stat.color} transition-transform group-hover:scale-110`}>
@@ -93,33 +125,46 @@ export default function EmployeeDashboard() {
             <CardHeader className="bg-slate-50/50 border-b border-slate-100">
                 <div className="flex items-center justify-between">
                     <div>
-                        <CardTitle className="text-lg font-bold text-slate-800">Permintaan Terkini</CardTitle>
-                        <CardDescription>Lacak status permintaan inventaris Anda</CardDescription>
+                        <CardTitle className="text-lg font-bold text-slate-800">Aktivitas Terkini</CardTitle>
+                        <CardDescription>Riwayat pengambilan barang terakhir Anda</CardDescription>
                     </div>
                     <Button variant="ghost" size="sm" className="text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50" asChild>
-                        <Link to="/employee/requests">Lihat Semua <ArrowRight className="w-4 h-4 ml-1" /></Link>
+                        <Link to="/employee/stock">Lihat Semua <ArrowRight className="w-4 h-4 ml-1" /></Link>
                     </Button>
                 </div>
             </CardHeader>
             <CardContent className="p-0">
                 <div className="divide-y divide-slate-100">
-                    {/* Placeholder for real data mapping later */}
-                    {[1, 2, 3].map((item) => (
-                        <div key={item} className="p-4 hover:bg-slate-50/50 transition-colors flex items-center justify-between">
-                            <div className="flex items-center gap-4">
-                                <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
-                                    <Package className="w-5 h-5" />
+                    {isLoading ? (
+                        <div className="p-8 text-center text-slate-500">Memuat data...</div>
+                    ) : stats?.recentStockTransactions.length === 0 ? (
+                        <div className="p-8 text-center text-slate-500">Belum ada aktivitas transaksi.</div>
+                    ) : (
+                        stats?.recentStockTransactions.map((item) => (
+                            <div key={item.id} className="p-4 hover:bg-slate-50/50 transition-colors flex items-center justify-between">
+                                <div className="flex items-center gap-4">
+                                    <div className="h-10 w-10 rounded-full bg-blue-50 flex items-center justify-center text-blue-600">
+                                        <Package className="w-5 h-5" />
+                                    </div>
+                                    <div>
+                                        <p className="text-sm font-semibold text-slate-900">{item.item.name}</p>
+                                        <p className="text-xs text-slate-500">
+                                            {format(new Date(item.date), "d MMM yyyy, HH:mm", { locale: localeId })}
+                                        </p>
+                                    </div>
                                 </div>
-                                <div>
-                                    <p className="text-sm font-semibold text-slate-900">Permintaan MacBook Pro M3</p>
-                                    <p className="text-xs text-slate-500">Diminta pada {format(new Date(), "d MMM yyyy")}</p>
+                                <div className="text-right">
+                                    <Badge variant={(item.type === 'IN' || item.type === 'ADJUSTMENT_ADD') ? "outline" : "secondary"} className={
+                                        (item.type === 'IN' || item.type === 'ADJUSTMENT_ADD')
+                                            ? "border-emerald-200 text-emerald-700 bg-emerald-50" 
+                                            : "bg-slate-100 text-slate-700"
+                                        }>
+                                        {item.type === 'IN' ? '+' : '-'}{item.quantity} Unit
+                                    </Badge>
                                 </div>
                             </div>
-                            <Badge variant="secondary" className="bg-amber-50 text-amber-700 border-amber-200">
-                                Menunggu Persetujuan
-                            </Badge>
-                        </div>
-                    ))}
+                        ))
+                    )}
                 </div>
             </CardContent>
         </Card>
