@@ -23,12 +23,15 @@ public class ExpenseRequest {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String purpose;
 
+    @Column(columnDefinition = "TEXT")
+    private String description; // Additional description
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ExpenseStatus status;
 
     @Column(columnDefinition = "TEXT")
-    private String rejectionNote;
+    private String rejectionReason;
 
     @Column(nullable = false)
     private LocalDateTime requestDate;

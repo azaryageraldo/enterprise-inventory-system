@@ -23,6 +23,9 @@ public class Item {
     @Column(nullable = false)
     private Double price;
 
+    @Column(columnDefinition = "integer default 10")
+    private Integer minStock = 10; // Default warning threshold
+
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;

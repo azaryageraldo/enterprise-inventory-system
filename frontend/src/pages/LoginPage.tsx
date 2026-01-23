@@ -36,6 +36,8 @@ export default function LoginPage() {
         navigate("/admin/dashboard");
       } else if (user?.role === "PEGAWAI") { // Changed from EMPLOYEE to PEGAWAI based on backend Role enum
         navigate("/employee/dashboard");
+      } else if (user?.role === "ATASAN") {
+        navigate("/manager/dashboard");
       } else {
         navigate("/dashboard"); // Fallback
       }

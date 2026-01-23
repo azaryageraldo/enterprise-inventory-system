@@ -11,10 +11,15 @@ import ActivityLogs from "./pages/admin/ActivityLogs";
 import EmployeeLayout from "@/components/employee/layout/EmployeeLayout";
 import EmployeeDashboard from "@/pages/employee/EmployeeDashboard";
 import CatalogPage from "@/pages/employee/CatalogPage";
-import RequestsPage from "@/pages/employee/RequestsPage";
+
 import ExpensesPage from "@/pages/employee/ExpensesPage";
-import EmployeeSettingsPage from "@/pages/employee/EmployeeSettingsPage";
+
 import StockManagementPage from "@/pages/employee/StockManagementPage";
+import ManagerLayout from "@/components/manager/layout/ManagerLayout";
+import ManagerDashboard from "@/pages/manager/ManagerDashboard";
+import ManagerReportPage from "@/pages/manager/ManagerReportPage";
+import ManagerApprovalsPage from "@/pages/manager/ManagerApprovalsPage";
+import ManagerStockPage from "@/pages/manager/ManagerStockPage";
 
 function App() {
   return (
@@ -62,9 +67,24 @@ function App() {
              <Route path="dashboard" element={<EmployeeDashboard />} />
              <Route path="inventory" element={<CatalogPage />} />
              <Route path="stock" element={<StockManagementPage />} />
-             <Route path="requests" element={<RequestsPage />} />
              <Route path="expenses" element={<ExpensesPage />} />
-             <Route path="settings" element={<EmployeeSettingsPage />} />
+            
+        </Route>
+
+        {/* Manager Routes */}
+        <Route
+            path="/manager"
+            element={
+                <ProtectedRoute>
+                    <ManagerLayout />
+                </ProtectedRoute>
+            }
+        >
+             <Route index element={<Navigate to="/manager/dashboard" replace />} />
+             <Route path="dashboard" element={<ManagerDashboard />} />
+             <Route path="reports" element={<ManagerReportPage />} />
+             <Route path="approvals" element={<ManagerApprovalsPage />} />
+             <Route path="stock-monitoring" element={<ManagerStockPage />} />
         </Route>
 
         
