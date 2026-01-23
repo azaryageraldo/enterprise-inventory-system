@@ -85,14 +85,14 @@ const MasterDataTable = ({
           </div>
           <Button onClick={onAdd} className="w-full sm:w-auto gap-2 shadow-sm">
             <Plus className="h-4 w-4" />
-            Add New
+            Tambah Baru
           </Button>
         </div>
         <div className="pt-4">
           <div className="relative max-w-sm">
              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
              <Input
-               placeholder={`Search ${title}...`}
+               placeholder={`Cari ${title}...`}
                value={searchTerm}
                onChange={(e) => setSearchTerm(e.target.value)}
                className="pl-9 bg-white"
@@ -105,9 +105,9 @@ const MasterDataTable = ({
           <Table>
             <TableHeader>
               <TableRow className="bg-gray-50/50 hover:bg-gray-50/50">
-                <TableHead>Name</TableHead>
-                {data.some(i => i.description) && <TableHead>Description</TableHead>}
-                <TableHead className="text-right w-[120px]">Actions</TableHead>
+                <TableHead>Nama</TableHead>
+                {data.some(i => i.description) && <TableHead>Deskripsi</TableHead>}
+                <TableHead className="text-right w-[120px]">Aksi</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -116,14 +116,14 @@ const MasterDataTable = ({
                   <TableCell colSpan={3} className="text-center py-8 text-muted-foreground">
                     <div className="flex items-center justify-center gap-2">
                       <div className="h-4 w-4 animate-spin rounded-full border-2 border-primary border-t-transparent"></div>
-                      Loading data...
+                      Memuat data...
                     </div>
                   </TableCell>
                 </TableRow>
               ) : filteredData.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={3} className="text-center py-8 text-muted-foreground">
-                    No data found.
+                    Tidak ada data ditemukan.
                   </TableCell>
                 </TableRow>
               ) : (
@@ -175,7 +175,7 @@ export default function MasterData() {
   const getContext = () => {
     switch(activeTab) {
       case "categories": return { 
-        title: "Category", 
+        title: "Kategori", 
         api: masterDataApi.createCategory, 
         updateApi: masterDataApi.updateCategory,
         deleteApi: masterDataApi.deleteCategory,
@@ -189,21 +189,21 @@ export default function MasterData() {
         refresh: fetchUnits 
       };
       case "divisions": return { 
-        title: "Division", 
+        title: "Divisi", 
         api: masterDataApi.createDivision, 
         updateApi: masterDataApi.updateDivision,
         deleteApi: masterDataApi.deleteDivision,
         refresh: fetchDivisions 
       };
       case "expense-categories": return { 
-        title: "Expense Category", 
+        title: "Kategori Pengeluaran", 
         api: masterDataApi.createExpenseCategory, 
         updateApi: masterDataApi.updateExpenseCategory,
         deleteApi: masterDataApi.deleteExpenseCategory,
         refresh: fetchExpenseCategories 
       };
       case "payment-methods": return { 
-        title: "Payment Method", 
+        title: "Metode Pembayaran", 
         api: masterDataApi.createPaymentMethod, 
         updateApi: masterDataApi.updatePaymentMethod,
         deleteApi: masterDataApi.deletePaymentMethod,
@@ -308,12 +308,12 @@ export default function MasterData() {
 
   return (
     <div className="space-y-6 w-full">
-      <Breadcrumb items={[{ label: "Admin", href: "/admin/dashboard" }, { label: "Master Data" }]} />
+      <Breadcrumb items={[{ label: "Admin", href: "/admin/dashboard" }, { label: "Data Master" }]} />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">Master Data</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">Data Master</h1>
           <p className="text-muted-foreground mt-1">
-            Manage Categories, Units, Divisions, and other system reference data.
+            Kelola Kategori, Unit, Divisi, dan data referensi sistem lainnya.
           </p>
         </div>
       </div>
@@ -321,27 +321,27 @@ export default function MasterData() {
       <Tabs defaultValue="categories" value={activeTab} onValueChange={setActiveTab} className="w-full">
         <TabsList className="grid w-full grid-cols-2 lg:grid-cols-5 h-auto p-1 bg-gray-100 rounded-lg">
           <TabsTrigger value="categories" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2">
-             <Layers className="mr-2 h-4 w-4" /> Categories
+             <Layers className="mr-2 h-4 w-4" /> Kategori
           </TabsTrigger>
           <TabsTrigger value="expense-categories" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2">
-             <Receipt className="mr-2 h-4 w-4" /> Expenses
+             <Receipt className="mr-2 h-4 w-4" /> Pengeluaran
           </TabsTrigger>
           <TabsTrigger value="units" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2">
-             <Ruler className="mr-2 h-4 w-4" /> Units
+             <Ruler className="mr-2 h-4 w-4" /> Unit
           </TabsTrigger>
           <TabsTrigger value="divisions" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2">
-             <Building2 className="mr-2 h-4 w-4" /> Divisions
+             <Building2 className="mr-2 h-4 w-4" /> Divisi
           </TabsTrigger>
           <TabsTrigger value="payment-methods" className="data-[state=active]:bg-white data-[state=active]:shadow-sm py-2">
-             <Wallet className="mr-2 h-4 w-4" /> Payment
+             <Wallet className="mr-2 h-4 w-4" /> Pembayaran
           </TabsTrigger>
         </TabsList>
 
         <div className="mt-6">
           <TabsContent value="categories" className="mt-0">
              <MasterDataTable 
-               title="Item Categories" 
-               description="Manage item categories for inventory classification."
+               title="Kategori Barang" 
+               description="Kelola kategori barang untuk klasifikasi inventaris."
                data={categories} 
                loading={loading}
                icon={<Layers className="h-6 w-6 text-primary" />}
@@ -352,8 +352,8 @@ export default function MasterData() {
           </TabsContent>
           <TabsContent value="expense-categories" className="mt-0">
              <MasterDataTable 
-               title="Expense Categories" 
-               description="Manage types of expenses for financial reporting."
+               title="Kategori Pengeluaran" 
+               description="Kelola jenis pengeluaran untuk laporan keuangan."
                data={expenseCategories} 
                loading={loading}
                icon={<Receipt className="h-6 w-6 text-primary" />}
@@ -364,8 +364,8 @@ export default function MasterData() {
           </TabsContent>
           <TabsContent value="units" className="mt-0">
              <MasterDataTable 
-               title="Units (Satuan)" 
-               description="Manage measurement units for items (Pcs, Kg, Box, etc)."
+               title="Unit (Satuan)" 
+               description="Kelola satuan ukuran barang (Pcs, Kg, Box, dll)."
                data={units} 
                loading={loading}
                icon={<Ruler className="h-6 w-6 text-primary" />}
@@ -376,8 +376,8 @@ export default function MasterData() {
           </TabsContent>
           <TabsContent value="divisions" className="mt-0">
              <MasterDataTable 
-               title="Divisions" 
-               description="Manage organizational divisions or departments."
+               title="Divisi" 
+               description="Kelola divisi atau departemen organisasi."
                data={divisions} 
                loading={loading}
                icon={<Building2 className="h-6 w-6 text-primary" />}
@@ -388,8 +388,8 @@ export default function MasterData() {
           </TabsContent>
           <TabsContent value="payment-methods" className="mt-0">
              <MasterDataTable 
-               title="Payment Methods" 
-               description="Manage accepted payment methods for transactions."
+               title="Metode Pembayaran" 
+               description="Kelola metode pembayaran yang diterima untuk transaksi."
                data={paymentMethods} 
                loading={loading}
                icon={<Wallet className="h-6 w-6 text-primary" />}
@@ -405,36 +405,36 @@ export default function MasterData() {
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
-            <DialogTitle>{editingItem ? `Edit ${getContext()?.title}` : `Add New ${getContext()?.title}`}</DialogTitle>
+            <DialogTitle>{editingItem ? `Edit ${getContext()?.title}` : `Tambah ${getContext()?.title} Baru`}</DialogTitle>
             <DialogDescription>
-              {editingItem ? "Update the details of this item." : "Create a new entry in master data."}
+              {editingItem ? "Perbarui detail item ini." : "Buat entri baru di data master."}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Nama</Label>
               <Input
                 id="name"
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                placeholder="Enter name"
+                placeholder="Masukkan nama"
               />
             </div>
             {(activeTab === "expense-categories" || activeTab === "payment-methods") && (
               <div className="grid gap-2">
-                <Label htmlFor="description">Description (Optional)</Label>
+                <Label htmlFor="description">Deskripsi (Opsional)</Label>
                 <Input
                   id="description"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  placeholder="Enter description"
+                  placeholder="Masukkan deskripsi"
                 />
               </div>
             )}
           </div>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDialogOpen(false)}>Cancel</Button>
-            <Button onClick={handleSave}>Save</Button>
+            <Button variant="outline" onClick={() => setDialogOpen(false)}>Batal</Button>
+            <Button onClick={handleSave}>Simpan</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
@@ -443,15 +443,15 @@ export default function MasterData() {
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete Item</DialogTitle>
+            <DialogTitle>Hapus Item</DialogTitle>
             <DialogDescription>
-              Are you sure you want to delete <strong>{editingItem?.name}</strong>? 
-              This action cannot be undone.
+              Apakah Anda yakin ingin menghapus <strong>{editingItem?.name}</strong>? 
+              Tindakan ini tidak dapat dibatalkan.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
-            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>Cancel</Button>
-            <Button variant="destructive" onClick={handleDelete}>Delete</Button>
+            <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>Batal</Button>
+            <Button variant="destructive" onClick={handleDelete}>Hapus</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>

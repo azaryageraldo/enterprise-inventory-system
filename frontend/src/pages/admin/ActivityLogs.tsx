@@ -82,10 +82,10 @@ export default function ActivityLogs() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <Breadcrumb items={[{ label: "Activity Logs", href: "/admin/activity-logs" }]} />
+        <Breadcrumb items={[{ label: "Log Aktivitas", href: "/admin/activity-logs" }]} />
         <Button variant="outline" size="sm" onClick={() => fetchLogs()} disabled={loading}>
           <RotateCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />
-          Refresh
+          Segarkan
         </Button>
       </div>
 
@@ -93,17 +93,17 @@ export default function ActivityLogs() {
 
       <Card>
         <CardHeader>
-          <CardTitle>System Activity Logs</CardTitle>
+          <CardTitle>Log Aktivitas Sistem</CardTitle>
           <CardDescription>
-            Monitor login attempts, data changes, and approval workflows.
+            Pantau percobaan login, perubahan data, dan alur persetujuan.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
             <TabsList>
-              <TabsTrigger value="logins">Login History</TabsTrigger>
-              <TabsTrigger value="audits">Data Changes (Audit)</TabsTrigger>
-              <TabsTrigger value="approvals">Approvals</TabsTrigger>
+              <TabsTrigger value="logins">Riwayat Login</TabsTrigger>
+              <TabsTrigger value="audits">Perubahan Data (Audit)</TabsTrigger>
+              <TabsTrigger value="approvals">Persetujuan</TabsTrigger>
             </TabsList>
 
             <TabsContent value="logins">
@@ -111,9 +111,9 @@ export default function ActivityLogs() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Time</TableHead>
-                      <TableHead>User</TableHead>
-                      <TableHead>IP Address</TableHead>
+                      <TableHead>Waktu</TableHead>
+                      <TableHead>Pengguna</TableHead>
+                      <TableHead>Alamat IP</TableHead>
                       <TableHead>Status</TableHead>
                     </TableRow>
                   </TableHeader>
@@ -127,7 +127,7 @@ export default function ActivityLogs() {
                     ) : loginLogs.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={4} className="h-24 text-center">
-                          No records found.
+                          Tidak ada data ditemukan.
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -138,7 +138,7 @@ export default function ActivityLogs() {
                           <TableCell>{log.ipAddress}</TableCell>
                           <TableCell>
                             <Badge variant={log.status === "SUCCESS" ? "default" : "destructive"}>
-                              {log.status}
+                              {log.status === "SUCCESS" ? "BERHASIL" : "GAGAL"}
                             </Badge>
                           </TableCell>
                         </TableRow>
@@ -154,11 +154,11 @@ export default function ActivityLogs() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Time</TableHead>
-                      <TableHead>User</TableHead>
-                      <TableHead>Action</TableHead>
-                      <TableHead>Entity</TableHead>
-                      <TableHead>Details</TableHead>
+                      <TableHead>Waktu</TableHead>
+                      <TableHead>Pengguna</TableHead>
+                      <TableHead>Aksi</TableHead>
+                      <TableHead>Entitas</TableHead>
+                      <TableHead>Detail</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -171,7 +171,7 @@ export default function ActivityLogs() {
                     ) : auditLogs.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={5} className="h-24 text-center">
-                          No records found.
+                          Tidak ada data ditemukan.
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -199,11 +199,11 @@ export default function ActivityLogs() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Time</TableHead>
-                      <TableHead>Approver</TableHead>
-                      <TableHead>Action</TableHead>
-                      <TableHead>Request ID</TableHead>
-                      <TableHead>Notes</TableHead>
+                      <TableHead>Waktu</TableHead>
+                      <TableHead>Penyetuju</TableHead>
+                      <TableHead>Aksi</TableHead>
+                      <TableHead>ID Permintaan</TableHead>
+                      <TableHead>Catatan</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -216,7 +216,7 @@ export default function ActivityLogs() {
                     ) : approvalLogs.length === 0 ? (
                       <TableRow>
                         <TableCell colSpan={5} className="h-24 text-center">
-                          No records found.
+                          Tidak ada data ditemukan.
                         </TableCell>
                       </TableRow>
                     ) : (
@@ -226,7 +226,7 @@ export default function ActivityLogs() {
                           <TableCell>{log.approverName}</TableCell>
                           <TableCell>
                             <Badge variant={log.action === "APPROVED" ? "default" : "destructive"}>
-                              {log.action}
+                              {log.action === "APPROVED" ? "DISETUJUI" : "DITOLAK"}
                             </Badge>
                           </TableCell>
                           <TableCell>#{log.expenseRequestId}</TableCell>
@@ -248,7 +248,7 @@ export default function ActivityLogs() {
               onClick={() => setPage(p => Math.max(0, p - 1))}
               disabled={page === 0}
             >
-              Previous
+              Sebelumnya
             </Button>
             <Button
               variant="outline"
@@ -256,7 +256,7 @@ export default function ActivityLogs() {
               onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
               disabled={page >= totalPages - 1}
             >
-              Next
+              Selanjutnya
             </Button>
           </div>
 

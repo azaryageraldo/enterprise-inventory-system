@@ -88,7 +88,7 @@ export default function UserManagement() {
       const data = await userApi.getAllUsers();
       setUsers(data);
     } catch (error) {
-      toast.error("Failed to fetch users");
+      toast.error("Gagal memuat data pengguna");
     } finally {
       setLoading(false);
     }
@@ -99,7 +99,7 @@ export default function UserManagement() {
       const data = await userApi.getDivisions();
       setDivisions(data);
     } catch (error) {
-      toast.error("Failed to fetch divisions");
+      toast.error("Gagal memuat divisi");
     }
   };
 
@@ -130,15 +130,15 @@ export default function UserManagement() {
     try {
       if (editingUser) {
         await userApi.updateUser(editingUser.id, formData);
-        toast.success("User updated successfully");
+        toast.success("Pengguna berhasil diperbarui");
       } else {
         await userApi.createUser(formData);
-        toast.success("User created successfully");
+        toast.success("Pengguna berhasil dibuat");
       }
       setUserDialogOpen(false);
       fetchUsers();
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Failed to save user");
+      toast.error(error.response?.data?.message || "Gagal menyimpan pengguna");
     }
   };
 
@@ -146,11 +146,11 @@ export default function UserManagement() {
     if (!editingUser) return;
     try {
       await userApi.deleteUser(editingUser.id);
-      toast.success("User deleted successfully");
+      toast.success("Pengguna berhasil dihapus");
       setDeleteDialogOpen(false);
       fetchUsers();
     } catch (error) {
-      toast.error("Failed to delete user");
+      toast.error("Gagal menghapus pengguna");
     }
   };
 
@@ -158,11 +158,11 @@ export default function UserManagement() {
     if (!editingUser) return;
     try {
       await userApi.resetPassword(editingUser.id, newPassword);
-      toast.success("Password reset successfully");
+      toast.success("Password berhasil direset");
       setPasswordDialogOpen(false);
       setNewPassword("");
     } catch (error) {
-      toast.error("Failed to reset password");
+      toast.error("Gagal mereset password");
     }
   };
 
@@ -193,22 +193,22 @@ export default function UserManagement() {
 
   return (
     <div className="space-y-6 w-full">
-      <Breadcrumb items={[{ label: "Admin", href: "/admin/dashboard" }, { label: "User Management" }]} />
+      <Breadcrumb items={[{ label: "Admin", href: "/admin/dashboard" }, { label: "Manajemen Pengguna" }]} />
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900">User Management</h1>
+          <h1 className="text-3xl font-bold tracking-tight text-gray-900">Manajemen Pengguna</h1>
           <p className="text-muted-foreground mt-1">
-            Manage system users, roles, and permissions within your organization.
+            Kelola pengguna sistem, peran, dan perizinan dalam organisasi Anda.
           </p>
         </div>
         <div className="flex items-center gap-2">
            <Button variant="outline" className="hidden sm:flex" disabled>
              <Download className="mr-2 h-4 w-4" />
-             Export
+             Ekspor
            </Button>
            <Button onClick={() => handleOpenUserDialog()} className="w-full sm:w-auto shadow-md hover:shadow-lg transition-all">
             <UserPlus className="mr-2 h-4 w-4" />
-            Add New User
+            Tambah Pengguna Baru
           </Button>
         </div>
       </div>
@@ -219,7 +219,7 @@ export default function UserManagement() {
                 <div className="flex-1 w-full sm:w-auto relative max-w-sm">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                     <Input
-                        placeholder="Search by name or username..."
+                        placeholder="Cari berdasarkan nama atau username..."
                         value={searchTerm}
                         onChange={(e) => setSearchTerm(e.target.value)}
                         className="pl-9 bg-white"
@@ -240,10 +240,10 @@ export default function UserManagement() {
                 <TableRow className="bg-gray-50/50 hover:bg-gray-50/50">
                   <TableHead className="w-[80px]">Avatar</TableHead>
                   <TableHead className="w-[150px]">Username</TableHead>
-                  <TableHead>Full Name</TableHead>
-                  <TableHead>Role</TableHead>
-                  <TableHead>Division</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
+                  <TableHead>Nama Lengkap</TableHead>
+                  <TableHead>Peran</TableHead>
+                  <TableHead>Divisi</TableHead>
+                  <TableHead className="text-right">Aksi</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -252,7 +252,7 @@ export default function UserManagement() {
                     <TableCell colSpan={6} className="text-center py-16 text-muted-foreground">
                       <div className="flex flex-col items-center justify-center gap-2">
                          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent"></div>
-                         <p>Loading user data...</p>
+                         <p>Memuat data pengguna...</p>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -261,7 +261,7 @@ export default function UserManagement() {
                     <TableCell colSpan={6} className="text-center py-16 text-muted-foreground">
                       <div className="flex flex-col items-center justify-center gap-2">
                          <Users className="h-10 w-10 text-gray-300" />
-                         <p>No users found matching your search.</p>
+                         <p>Tidak ada pengguna ditemukan.</p>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -292,7 +292,7 @@ export default function UserManagement() {
                                     {user.divisionName}
                                 </span>
                             ) : (
-                                <span className="text-gray-400 italic">No Division</span>
+                                <span className="text-gray-400 italic">Tanpa Divisi</span>
                             )}
                          </div>
                       </TableCell>
@@ -300,12 +300,12 @@ export default function UserManagement() {
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
                             <Button variant="ghost" className="h-8 w-8 p-0 hover:bg-gray-100 rounded-full transition-colors">
-                              <span className="sr-only">Open menu</span>
+                              <span className="sr-only">Buka menu</span>
                               <MoreHorizontal className="h-4 w-4 text-gray-500" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end" className="w-[160px]">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                            <DropdownMenuLabel>Aksi</DropdownMenuLabel>
                             <DropdownMenuItem onClick={() => handleOpenUserDialog(user)} className="cursor-pointer">
                                <Pencil className="mr-2 h-4 w-4" /> Edit
                             </DropdownMenuItem>
@@ -317,7 +317,7 @@ export default function UserManagement() {
                                 onClick={() => { setEditingUser(user); setDeleteDialogOpen(true); }} 
                                 className="cursor-pointer text-red-600 focus:text-red-600 focus:bg-red-50"
                             >
-                               <Trash2 className="mr-2 h-4 w-4" /> Delete
+                               <Trash2 className="mr-2 h-4 w-4" /> Hapus
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -335,9 +335,9 @@ export default function UserManagement() {
       <Dialog open={userDialogOpen} onOpenChange={setUserDialogOpen}>
         <DialogContent className="sm:max-w-[500px]">
           <DialogHeader>
-            <DialogTitle>{editingUser ? "Edit User" : "Add New User"}</DialogTitle>
+            <DialogTitle>{editingUser ? "Edit Pengguna" : "Tambah Pengguna Baru"}</DialogTitle>
             <DialogDescription>
-              {editingUser ? "Update system access and information" : "Create a new user account with role-based access."}
+              {editingUser ? "Perbarui akses dan informasi pengguna" : "Buat akun pengguna baru dengan akses berbasis peran."}
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
@@ -347,7 +347,7 @@ export default function UserManagement() {
                 id="username"
                 value={formData.username}
                 onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                placeholder="e.g., john.doe"
+                placeholder="cth: budi.santoso"
                 className="col-span-3"
               />
             </div>
@@ -364,17 +364,17 @@ export default function UserManagement() {
               </div>
             )}
             <div className="grid gap-2">
-              <Label htmlFor="fullName">Full Name</Label>
+              <Label htmlFor="fullName">Nama Lengkap</Label>
               <Input
                 id="fullName"
                 value={formData.fullName}
                 onChange={(e) => setFormData({ ...formData, fullName: e.target.value })}
-                placeholder="e.g., John Doe"
+                placeholder="cth: Budi Santoso"
               />
             </div>
             <div className="grid grid-cols-2 gap-4">
                 <div className="grid gap-2">
-                <Label htmlFor="role">Role</Label>
+                <Label htmlFor="role">Peran</Label>
                 <Select value={formData.role} onValueChange={(value) => setFormData({ ...formData, role: value })}>
                     <SelectTrigger>
                     <SelectValue />
@@ -389,7 +389,7 @@ export default function UserManagement() {
                 </Select>
                 </div>
                 <div className="grid gap-2">
-                <Label htmlFor="division">Division</Label>
+                <Label htmlFor="division">Divisi</Label>
                 <Select
                     value={formData.divisionId?.toString() || "none"}
                     onValueChange={(value) =>
@@ -397,10 +397,10 @@ export default function UserManagement() {
                     }
                 >
                     <SelectTrigger>
-                    <SelectValue placeholder="Select division" />
+                    <SelectValue placeholder="Pilih divisi" />
                     </SelectTrigger>
                     <SelectContent>
-                    <SelectItem value="none">No Division</SelectItem>
+                    <SelectItem value="none">Tanpa Divisi</SelectItem>
                     {divisions.map((div) => (
                         <SelectItem key={div.id} value={div.id.toString()}>
                         {div.name}
@@ -413,10 +413,10 @@ export default function UserManagement() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setUserDialogOpen(false)}>
-              Cancel
+              Batal
             </Button>
             <Button onClick={handleSaveUser}>
-                {editingUser ? "Save Changes" : "Create User"}
+                {editingUser ? "Simpan Perubahan" : "Buat Pengguna"}
             </Button>
           </DialogFooter>
         </DialogContent>
@@ -428,24 +428,24 @@ export default function UserManagement() {
           <DialogHeader>
             <DialogTitle>Reset Password</DialogTitle>
             <DialogDescription>
-              Create a new secure password for <strong>{editingUser?.fullName}</strong>.
+              Buat password baru yang aman untuk <strong>{editingUser?.fullName}</strong>.
             </DialogDescription>
           </DialogHeader>
           <div className="grid gap-4 py-4">
             <div className="grid gap-2">
-              <Label htmlFor="newPassword">New Password</Label>
+              <Label htmlFor="newPassword">Password Baru</Label>
               <Input
                 id="newPassword"
                 type="password"
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
-                placeholder="Enter new password"
+                placeholder="Masukkan password baru"
               />
             </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setPasswordDialogOpen(false)}>
-              Cancel
+              Batal
             </Button>
             <Button onClick={handleResetPassword}>Reset Password</Button>
           </DialogFooter>
@@ -456,18 +456,18 @@ export default function UserManagement() {
       <Dialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Delete User Account</DialogTitle>
+            <DialogTitle>Hapus Akun Pengguna</DialogTitle>
             <DialogDescription>
-              Are you sure you want to permanently delete <strong>{editingUser?.fullName}</strong>? 
-              This action cannot be undone and will remove all access for this user.
+              Apakah Anda yakin ingin menghapus <strong>{editingUser?.fullName}</strong> secara permanen? 
+              Tindakan ini tidak dapat dibatalkan.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter>
             <Button variant="outline" onClick={() => setDeleteDialogOpen(false)}>
-              Cancel
+              Batal
             </Button>
             <Button variant="destructive" onClick={handleDeleteUser}>
-              Delete Account
+              Hapus Akun
             </Button>
           </DialogFooter>
         </DialogContent>

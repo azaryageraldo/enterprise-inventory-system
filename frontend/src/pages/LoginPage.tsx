@@ -34,8 +34,10 @@ export default function LoginPage() {
       const user = useAuthStore.getState().user;
       if (user?.role === "ADMIN") {
         navigate("/admin/dashboard");
+      } else if (user?.role === "PEGAWAI") { // Changed from EMPLOYEE to PEGAWAI based on backend Role enum
+        navigate("/employee/dashboard");
       } else {
-        navigate("/dashboard");
+        navigate("/dashboard"); // Fallback
       }
     } catch (err: any) {
       setError(err.response?.data?.message || "Invalid credentials. Please try again.");
