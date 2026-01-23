@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Package, FileText, Settings, ChevronRight, LogOut, Wallet } from "lucide-react";
+import { LayoutDashboard, Package, FileText, Settings, ChevronRight, LogOut, Wallet, ClipboardList } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 
 interface SidebarProps {
@@ -21,6 +21,11 @@ export function Sidebar({ className }: SidebarProps) {
         title: "Katalog Inventaris",
         icon: Package,
         href: "/employee/inventory",
+    },
+    {
+        title: "Manajemen Stok",
+        icon: ClipboardList,
+        href: "/employee/stock",
     },
     {
         title: "Permintaan Saya",

@@ -14,6 +14,7 @@ import CatalogPage from "@/pages/employee/CatalogPage";
 import RequestsPage from "@/pages/employee/RequestsPage";
 import ExpensesPage from "@/pages/employee/ExpensesPage";
 import EmployeeSettingsPage from "@/pages/employee/EmployeeSettingsPage";
+import StockManagementPage from "@/pages/employee/StockManagementPage";
 
 function App() {
   return (
@@ -60,6 +61,7 @@ function App() {
              <Route index element={<Navigate to="/employee/dashboard" replace />} />
              <Route path="dashboard" element={<EmployeeDashboard />} />
              <Route path="inventory" element={<CatalogPage />} />
+             <Route path="stock" element={<StockManagementPage />} />
              <Route path="requests" element={<RequestsPage />} />
              <Route path="expenses" element={<ExpensesPage />} />
              <Route path="settings" element={<EmployeeSettingsPage />} />
