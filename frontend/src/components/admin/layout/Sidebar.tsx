@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, Users, Database, LogOut, Package, FileText, Settings, ChevronRight } from "lucide-react";
+import { LayoutDashboard, Users, Database, LogOut, FileText, ChevronRight } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 
 interface SidebarProps {
@@ -27,21 +27,13 @@ export function Sidebar({ className }: SidebarProps) {
         icon: Database,
         href: "/admin/master-data",
     },
+    
     {
-        title: "Inventory Overview",
-        icon: Package,
-        href: "/admin/inventory",
-    },
-    {
-        title: "System Logs",
+        title: "Activity Logs",
         icon: FileText,
-        href: "/admin/logs",
+        href: "/admin/activity-logs",
     },
-    {
-        title: "Settings",
-        icon: Settings,
-        href: "/admin/settings",
-    },
+    
   ];
 
   return (
@@ -112,20 +104,7 @@ export function Sidebar({ className }: SidebarProps) {
       </div>
       
       {/* Sidebar Footer */}
-      <div className="p-4 bg-black/20 border-t border-white/10 backdrop-blur-sm">
-          <button 
-            onClick={() => logout()}
-            className="flex items-center justify-between gap-3 w-full rounded-xl px-4 py-3.5 text-[15px] font-semibold text-red-100 bg-red-900/30 hover:bg-red-900/50 hover:text-white hover:shadow-lg transition-all duration-200 group border border-red-400/20"
-          >
-            <div className="flex items-center gap-3">
-              <div className="p-2 rounded-lg bg-red-500/20 group-hover:bg-red-500/30 transition-all">
-                <LogOut className="h-[18px] w-[18px]" strokeWidth={2.5} />
-              </div>
-              <span className="tracking-wide">Sign Out</span>
-            </div>
-            <ChevronRight className="h-4 w-4 opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0 transition-all" />
-          </button>
-      </div>
+      
     </div>
   );
 }

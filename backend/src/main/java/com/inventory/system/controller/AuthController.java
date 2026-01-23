@@ -21,16 +21,29 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
+    private final com.inventory.system.service.ActivityLogService activityLogService;
     private final UserRepository userRepository;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
     @PostMapping("/login")
-    public ResponseEntity<?> login(@RequestBody LoginRequest request) {
+    public ResponseEntity<?> login(@RequestBody LoginRequest request,
+            jakarta.servlet.http.HttpServletRequest httpRequest) {
+        String ipAddress = httpRequest.getRemoteAddr();
+        String userAgent = httpRequest.getHeader("User-Agent");
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (Exception e) {
+            // Record failed login
+            Long userId = null;
+            var user = userRepository.findByUsername(request.getUsername()).orElse(null);
+            if (user != null)
+                userId = user.getId();
+
+            activityLogService.recordLogin(userId, request.getUsername(), ipAddress, userAgent, "FAILED");
+
             Map<String, String> error = new HashMap<>();
             error.put("message", "Invalid username or password");
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(error);
@@ -40,6 +53,9 @@ public class AuthController {
                 .orElseThrow(); // Should exist if auth succeeded
 
         String token = jwtService.generateToken(user.getUsername(), user.getRole().name());
+
+        // Record successful login
+        activityLogService.recordLogin(user.getId(), user.getUsername(), ipAddress, userAgent, "SUCCESS");
 
         LoginResponse response = new LoginResponse(
                 token,

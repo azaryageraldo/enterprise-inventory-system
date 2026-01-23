@@ -7,6 +7,7 @@ import MasterData from "./pages/admin/MasterData";
 import AdminLayout from "./components/admin/layout/AdminLayout";
 import { ProtectedRoute } from "./components/ProtectedRoute";
 import { Toaster } from "./components/ui/sonner";
+import ActivityLogs from "./pages/admin/ActivityLogs";
 
 function App() {
   return (
@@ -35,8 +36,10 @@ function App() {
         >
           <Route index element={<Navigate to="/admin/dashboard" replace />} />
           <Route path="dashboard" element={<AdminDashboard />} />
+
           <Route path="/admin/users" element={<UserManagement />} />
           <Route path="/admin/master-data" element={<MasterData />} />
+          <Route path="/admin/activity-logs" element={<ActivityLogs />} />
         </Route>
 
         <Route path="/" element={<Navigate to="/login" replace />} />
