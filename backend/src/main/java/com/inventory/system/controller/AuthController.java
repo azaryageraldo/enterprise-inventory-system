@@ -32,10 +32,13 @@ public class AuthController {
         String ipAddress = httpRequest.getRemoteAddr();
         String userAgent = httpRequest.getHeader("User-Agent");
 
+        System.out.println("DEBUG: Login attempt for username: " + request.getUsername());
+
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
         } catch (Exception e) {
+            System.out.println("DEBUG: Authentication failed for: " + request.getUsername());
             // Record failed login
             Long userId = null;
             var user = userRepository.findByUsername(request.getUsername()).orElse(null);
@@ -53,6 +56,9 @@ public class AuthController {
                 .orElseThrow(); // Should exist if auth succeeded
 
         String token = jwtService.generateToken(user.getUsername(), user.getRole().name());
+
+        System.out.println("DEBUG: Login successful for: " + user.getUsername());
+        System.out.println("DEBUG: User Role: " + user.getRole().name());
 
         // Record successful login
         activityLogService.recordLogin(user.getId(), user.getUsername(), ipAddress, userAgent, "SUCCESS");

@@ -26,6 +26,9 @@ public class FinancialRecord {
     @Column(nullable = false)
     private String paymentMethod;
 
+    @Column(columnDefinition = "TEXT")
+    private String paymentProof;
+
     @Column(nullable = false)
     private BigDecimal amount;
 }

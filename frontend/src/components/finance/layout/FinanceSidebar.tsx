@@ -1,13 +1,13 @@
 import { Link, useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
-import { LayoutDashboard, CreditCard, Banknote, TrendingUp, Package, ChevronRight, LogOut } from "lucide-react";
+import { LayoutDashboard, FileCheck, Wallet, PieChart, LogOut, History, ChevronRight } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 
 interface SidebarProps {
     className?: string;
 }
 
-export function ManagerSidebar({ className }: SidebarProps) {
+export function FinanceSidebar({ className }: SidebarProps) {
   const location = useLocation();
   const { logout, user } = useAuthStore();
 
@@ -15,27 +15,22 @@ export function ManagerSidebar({ className }: SidebarProps) {
     {
       title: "Dashboard",
       icon: LayoutDashboard,
-      href: "/manager/dashboard",
+      href: "/finance/dashboard",
     },
     {
-        title: "Approve Pengeluaran",
-        icon: CreditCard,
-        href: "/manager/approvals",
+      title: "Perlu Pembayaran",
+      icon: FileCheck,
+      href: "/finance/expenses/approved",
     },
     {
-        title: "Riwayat Transaksi",
-        icon: Banknote,
-        href: "/manager/financial-records",
+      title: "Riwayat Transaksi",
+      icon: History,
+      href: "/finance/transactions",
     },
     {
-        title: "Laporan Keuangan",
-        icon: TrendingUp,
-        href: "/manager/reports",
-    },
-    {
-        title: "Monitoring Stok",
-        icon: Package,
-        href: "/manager/stock-monitoring",
+      title: "Laporan Keuangan",
+      icon: PieChart,
+      href: "/finance/reports",
     },
   ];
 
@@ -53,7 +48,7 @@ export function ManagerSidebar({ className }: SidebarProps) {
             </div>
             <div>
                 <h1 className="font-bold text-xl tracking-tight leading-none text-white drop-shadow-sm">Enterprise</h1>
-                <p className="text-[11px] text-indigo-300 uppercase tracking-widest font-bold mt-0.5">Panel Atasan</p>
+                <p className="text-[11px] text-indigo-300 uppercase tracking-widest font-bold mt-0.5">Panel Keuangan</p>
             </div>
          </div>
       </div>
@@ -62,7 +57,7 @@ export function ManagerSidebar({ className }: SidebarProps) {
       <div className="flex-1 overflow-y-auto py-6 px-3 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
         <nav className="space-y-1.5">
             <div className="px-3 mb-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                Menu Manajemen
+                Menu Utama
             </div>
             {menuItems.map((item) => {
               const isActive = location.pathname.startsWith(item.href);
@@ -110,14 +105,14 @@ export function ManagerSidebar({ className }: SidebarProps) {
       <div className="p-4 border-t border-white/10 mt-auto">
         <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
             <div className="h-10 w-10 rounded-full bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center text-white font-bold shadow-lg ring-2 ring-white/10">
-                {user?.fullName?.charAt(0).toUpperCase() || "M"}
+                {user?.fullName?.charAt(0).toUpperCase() || "F"}
             </div>
             <div className="flex-1 min-w-0">
                 <p className="text-sm font-semibold text-white truncate">
-                    {user?.fullName || "Manager"}
+                    {user?.fullName || "Finance Staff"}
                 </p>
                 <p className="text-[11px] text-slate-400 truncate font-medium">
-                    {user?.role || "Supervisor"}
+                    {user?.role || "Finance"}
                 </p>
             </div>
             <button 

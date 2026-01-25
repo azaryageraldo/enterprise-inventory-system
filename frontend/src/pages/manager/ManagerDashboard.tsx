@@ -145,7 +145,7 @@ export default function ManagerDashboard() {
                     </div>
                     <div className="flex items-center mt-4 text-xs font-medium text-slate-500">
                         {stat.label}
-                    </div>
+                    </div> 
                 </CardContent>
             </Card>
         ))}
@@ -278,3 +278,4 @@ export default function ManagerDashboard() {
     </div>
   );
 }
+

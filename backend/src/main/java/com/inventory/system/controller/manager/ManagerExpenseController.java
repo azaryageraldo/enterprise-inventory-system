@@ -16,6 +16,7 @@ import java.util.Map;
 public class ManagerExpenseController {
 
     private final ExpenseRequestRepository expenseRequestRepository;
+    private final com.inventory.system.repository.FinancialRecordRepository financialRecordRepository;
 
     @GetMapping("/pending")
     public ResponseEntity<List<ExpenseRequest>> getPendingExpenses() {
@@ -47,5 +48,10 @@ public class ManagerExpenseController {
         expenseRequestRepository.save(request);
 
         return ResponseEntity.ok(Map.of("message", "Expense rejected"));
+    }
+
+    @GetMapping("/history")
+    public ResponseEntity<List<com.inventory.system.model.FinancialRecord>> getFinancialHistory() {
+        return ResponseEntity.ok(financialRecordRepository.findAll());
     }
 }

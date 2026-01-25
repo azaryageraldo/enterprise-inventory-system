@@ -23,6 +23,8 @@ interface Item {
     price: number;
 }
 
+import { Breadcrumb } from "@/components/Breadcrumb";
+
 export default function ManagerStockPage() {
     const [allItems, setAllItems] = useState<Item[]>([]);
     const [lowItems, setLowItems] = useState<Item[]>([]);
@@ -104,6 +106,10 @@ export default function ManagerStockPage() {
 
     return (
         <div className="space-y-6">
+            <Breadcrumb 
+                items={[{ label: "Pantau Stok" }]} 
+                homeLink="/manager/dashboard" 
+            />
             <div>
                 <h1 className="text-2xl font-bold tracking-tight text-slate-900">Pantau Stok</h1>
                 <p className="text-slate-500">Monitoring ketersediaan barang inventaris kantor.</p>

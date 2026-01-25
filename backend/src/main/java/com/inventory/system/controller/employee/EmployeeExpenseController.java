@@ -23,6 +23,7 @@ public class EmployeeExpenseController {
     private final ExpenseRequestRepository expenseRequestRepository;
     private final UserRepository userRepository;
     private final FileStorageService fileStorageService;
+    private final com.inventory.system.repository.FinancialRecordRepository financialRecordRepository;
 
     @PostMapping(consumes = org.springframework.http.MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<?> createExpenseRequest(
@@ -60,6 +61,34 @@ public class EmployeeExpenseController {
     public ResponseEntity<List<ExpenseRequest>> getMyExpenses() {
         User user = getCurrentUser();
         return ResponseEntity.ok(expenseRequestRepository.findByUserIdOrderByRequestDateDesc(user.getId()));
+    }
+
+    @GetMapping("/{id}/details")
+    public ResponseEntity<?> getExpenseDetails(@PathVariable Long id) {
+        ExpenseRequest expense = expenseRequestRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Expense not found"));
+
+        // Ensure user owns this expense
+        User user = getCurrentUser();
+        if (!expense.getUser().getId().equals(user.getId())) {
+            return ResponseEntity.status(403).body("Unauthorized access to this expense");
+        }
+
+        java.util.Map<String, Object> response = new java.util.HashMap<>();
+        response.put("expense", expense);
+
+        if (expense.getStatus() == ExpenseStatus.PAID) {
+            com.inventory.system.model.FinancialRecord record = financialRecordRepository.findByExpenseRequest(expense)
+                    .orElse(null);
+            if (record != null) {
+                response.put("paymentDate", record.getPaymentDate());
+                response.put("transactionNumber", record.getTransactionNumber());
+                response.put("paymentProof", record.getPaymentProof());
+                response.put("paymentMethod", record.getPaymentMethod());
+            }
+        }
+
+        return ResponseEntity.ok(response);
     }
 
     private User getCurrentUser() {

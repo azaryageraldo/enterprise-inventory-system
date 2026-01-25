@@ -24,6 +24,8 @@ interface DashboardStats {
     dailyExpenses: DailyExpense[];
 }
 
+import { Breadcrumb } from "@/components/Breadcrumb";
+
 export default function ManagerReportPage() {
     const [stats, setStats] = useState<DashboardStats | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -71,6 +73,10 @@ export default function ManagerReportPage() {
 
     return (
         <div className="space-y-8 p-1">
+            <Breadcrumb 
+                items={[{ label: "Laporan Ringkas" }]} 
+                homeLink="/manager/dashboard" 
+            />
             <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                     <h1 className="text-3xl font-bold tracking-tight text-slate-900">Laporan Ringkas</h1>

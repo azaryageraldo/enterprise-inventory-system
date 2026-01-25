@@ -35,6 +35,8 @@ interface ExpenseRequest {
     evidenceImage: string | null;
 }
 
+import { Breadcrumb } from "@/components/Breadcrumb";
+
 export default function ManagerApprovalsPage() {
     const [requests, setRequests] = useState<ExpenseRequest[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -95,6 +97,10 @@ export default function ManagerApprovalsPage() {
 
     return (
         <div className="space-y-6">
+            <Breadcrumb 
+                items={[{ label: "Persetujuan Pengeluaran" }]} 
+                homeLink="/manager/dashboard" 
+            />
             <div>
                 <h1 className="text-2xl font-bold tracking-tight text-slate-900">Persetujuan Pengeluaran</h1>
                 <p className="text-slate-500">Tinjau dan kelola pengajuan pengeluaran dari pegawai.</p>

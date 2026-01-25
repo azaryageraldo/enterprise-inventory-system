@@ -14,6 +14,8 @@ public interface ExpenseRequestRepository extends JpaRepository<ExpenseRequest, 
 
         long countByStatus(ExpenseStatus status);
 
+        List<ExpenseRequest> findByStatus(ExpenseStatus status);
+
         long countByUserIdAndStatus(Long userId, ExpenseStatus status);
 
         @Query("SELECT SUM(e.amount) FROM ExpenseRequest e WHERE e.status = 'APPROVED'")

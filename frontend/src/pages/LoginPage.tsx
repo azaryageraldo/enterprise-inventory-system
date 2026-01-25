@@ -28,16 +28,21 @@ export default function LoginPage() {
     }
 
     try {
-      await login(username, password);
+      await login(username.trim(), password.trim());
       
       // Check role to determine redirect path
       const user = useAuthStore.getState().user;
+      console.log("Login success. User data:", user);
+      console.log("User role:", user?.role, "Type:", typeof user?.role);
+      
       if (user?.role === "ADMIN") {
         navigate("/admin/dashboard");
       } else if (user?.role === "PEGAWAI") { // Changed from EMPLOYEE to PEGAWAI based on backend Role enum
         navigate("/employee/dashboard");
       } else if (user?.role === "ATASAN") {
         navigate("/manager/dashboard");
+      } else if (user?.role === "KEUANGAN") {
+        navigate("/finance/dashboard");
       } else {
         navigate("/dashboard"); // Fallback
       }

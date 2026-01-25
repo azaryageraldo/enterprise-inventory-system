@@ -20,6 +20,12 @@ import ManagerDashboard from "@/pages/manager/ManagerDashboard";
 import ManagerReportPage from "@/pages/manager/ManagerReportPage";
 import ManagerApprovalsPage from "@/pages/manager/ManagerApprovalsPage";
 import ManagerStockPage from "@/pages/manager/ManagerStockPage";
+import ManagerFinancialPage from "@/pages/manager/ManagerFinancialPage";
+import FinanceLayout from "@/components/finance/layout/FinanceLayout";
+import FinanceDashboard from "@/pages/finance/FinanceDashboard";
+import FinanceApprovedPage from "@/pages/finance/FinanceApprovedPage";
+import FinanceTransactionPage from "@/pages/finance/FinanceTransactionPage";
+import FinanceReportPage from "@/pages/finance/FinanceReportPage";
 
 function App() {
   return (
@@ -84,7 +90,24 @@ function App() {
              <Route path="dashboard" element={<ManagerDashboard />} />
              <Route path="reports" element={<ManagerReportPage />} />
              <Route path="approvals" element={<ManagerApprovalsPage />} />
+             <Route path="financial-records" element={<ManagerFinancialPage />} />
              <Route path="stock-monitoring" element={<ManagerStockPage />} />
+        </Route>
+
+        {/* Finance Routes */}
+        <Route
+            path="/finance"
+            element={
+                <ProtectedRoute>
+                    <FinanceLayout />
+                </ProtectedRoute>
+            }
+        >
+             <Route index element={<Navigate to="/finance/dashboard" replace />} />
+             <Route path="dashboard" element={<FinanceDashboard />} />
+             <Route path="expenses/approved" element={<FinanceApprovedPage />} />
+             <Route path="transactions" element={<FinanceTransactionPage />} />
+             <Route path="reports" element={<FinanceReportPage />} />
         </Route>
 
         

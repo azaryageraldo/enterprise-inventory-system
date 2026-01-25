@@ -17,6 +17,7 @@ import { toast } from "sonner";
 import api from "@/lib/api";
 import { format } from "date-fns";
 import { id as localeId } from "date-fns/locale";
+import { DetailExpenseDialog } from "@/components/employee/DetailExpenseDialog";
 
 interface ExpenseRequest {
     id: number;
@@ -24,7 +25,8 @@ interface ExpenseRequest {
     purpose: string;
     status: "PENDING" | "APPROVED" | "REJECTED" | "PAID";
     requestDate: string;
-    rejectionNote?: string;
+    approvalDate?: string;
+    rejectionReason?: string;
     evidenceImage?: string;
 }
 
@@ -40,6 +42,11 @@ export default function ExpensesPage() {
     const [evidenceFile, setEvidenceFile] = useState<File | null>(null);
     const [isSubmitting, setIsSubmitting] = useState(false);
 
+    // Detail Dialog State
+    const [detailData, setDetailData] = useState<any>(null);
+    const [detailOpen, setDetailOpen] = useState(false);
+    const [loadingDetail, setLoadingDetail] = useState(false);
+
     useEffect(() => {
         fetchExpenses();
     }, []);
@@ -52,6 +59,20 @@ export default function ExpensesPage() {
             console.error(error);
         } finally {
             setIsLoading(false);
+        }
+    };
+
+    const handleDetail = async (id: number) => {
+        setLoadingDetail(true);
+        try {
+            const response = await api.get(`/employee/expenses/${id}/details`);
+            setDetailData(response.data);
+            setDetailOpen(true);
+        } catch (error) {
+            console.error(error);
+            toast.error("Gagal memuat detail.");
+        } finally {
+            setLoadingDetail(false);
         }
     };
 
@@ -162,13 +183,14 @@ export default function ExpensesPage() {
                                         <TableHead className="text-right">Jumlah</TableHead>
                                         <TableHead className="text-center">Status</TableHead>
                                         <TableHead>Catatan</TableHead>
+                                        <TableHead className="text-center">Aksi</TableHead>
                                     </TableRow>
                                 </TableHeader>
                                 <TableBody>
                                     {isLoading ? (
-                                        <TableRow><TableCell colSpan={6} className="h-24 text-center">Memuat...</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={7} className="h-24 text-center">Memuat...</TableCell></TableRow>
                                     ) : expenses.length === 0 ? (
-                                        <TableRow><TableCell colSpan={6} className="h-24 text-center text-slate-500">Belum ada pengajuan.</TableCell></TableRow>
+                                        <TableRow><TableCell colSpan={7} className="h-24 text-center text-slate-500">Belum ada pengajuan.</TableCell></TableRow>
                                     ) : expenses.map((exp) => (
                                         <TableRow key={exp.id}>
                                             <TableCell className="text-xs text-slate-500">
@@ -185,7 +207,12 @@ export default function ExpensesPage() {
                                                 {getStatusBadge(exp.status)}
                                             </TableCell>
                                             <TableCell className="text-xs text-red-500">
-                                                {exp.rejectionNote || "-"}
+                                                {exp.rejectionReason || "-"}
+                                            </TableCell>
+                                            <TableCell className="text-center">
+                                                <Button variant="ghost" size="sm" onClick={() => handleDetail(exp.id)} disabled={loadingDetail}>
+                                                    Detail
+                                                </Button>
                                             </TableCell>
                                         </TableRow>
                                     ))}
@@ -293,6 +320,8 @@ export default function ExpensesPage() {
                     </Card>
                 </TabsContent>
             </Tabs>
+
+            <DetailExpenseDialog open={detailOpen} onOpenChange={setDetailOpen} data={detailData} />
         </div>
     );
 }
