@@ -62,9 +62,10 @@ public class DirectorReportController {
 
     @GetMapping("/expenses")
     public ResponseEntity<?> getExpenseReport() {
-        // 1. Total Expenses (Lifetime for now, or we can filter by year)
-        // For simplicity let's rely on dashboard endpoint for total monthly,
-        // here we provide breakdown.
+        // 1. Total Expenses (Lifetime)
+        BigDecimal totalExpenses = financialRecordRepository.sumTotalExpenses();
+        if (totalExpenses == null)
+            totalExpenses = BigDecimal.ZERO;
 
         // 2. Expenses by Division
         List<Object[]> divisionRaw = financialRecordRepository.sumExpensesByDivision();
@@ -79,8 +80,35 @@ public class DirectorReportController {
             byDivision.add(map);
         }
 
+        // 3. Expenses by Month (Trend)
+        List<Object[]> monthlyRaw = financialRecordRepository.sumExpensesGroupedByMonth();
+        List<Map<String, Object>> byMonth = new ArrayList<>();
+
+        // Month names helper
+        String[] monthNames = { "Jan", "Feb", "Mar", "Apr", "Mei", "Jun", "Jul", "Ags", "Sep", "Okt", "Nov", "Des" };
+
+        // Take last 12 months for the chart (reversed from query desc order)
+        int monthsLimit = Math.min(monthlyRaw.size(), 12);
+        // We want chronological order for charts, so we iterate backwards from the
+        // limit
+        for (int i = monthsLimit - 1; i >= 0; i--) {
+            Object[] row = monthlyRaw.get(i);
+            int year = (Integer) row[0];
+            int month = (Integer) row[1];
+            BigDecimal amount = (BigDecimal) row[2];
+
+            Map<String, Object> map = new HashMap<>();
+            map.put("name", monthNames[month - 1] + " " + year);
+            map.put("value", amount);
+            map.put("originalMonth", month);
+            map.put("originalYear", year);
+            byMonth.add(map);
+        }
+
         Map<String, Object> response = new HashMap<>();
+        response.put("totalExpenses", totalExpenses);
         response.put("byDivision", byDivision);
+        response.put("byMonth", byMonth);
 
         return ResponseEntity.ok(response);
     }
