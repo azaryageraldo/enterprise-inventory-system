@@ -5,9 +5,25 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PageHeader } from "@/components/PageHeader";
 import { LogOut, User } from "lucide-react";
 
+import { useEffect } from "react";
+
 export default function DashboardPage() {
   const { user, logout } = useAuthStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("DEBUG: DashboardPage mounted. User:", user);
+    if (user) {
+        if (user.role === "PIMPINAN") {
+             console.log("DEBUG: Redirecting PIMPINAN to director dashboard");
+             navigate("/director/dashboard");
+        }
+        else if (user.role === "ADMIN") navigate("/admin/dashboard");
+        else if (user.role === "PEGAWAI") navigate("/employee/dashboard");
+        else if (user.role === "ATASAN") navigate("/manager/dashboard");
+        else if (user.role === "KEUANGAN") navigate("/finance/dashboard");
+    }
+  }, [user, navigate]);
 
   const handleLogout = () => {
     logout();

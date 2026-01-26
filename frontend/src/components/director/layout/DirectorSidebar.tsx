@@ -3,11 +3,19 @@ import { cn } from "@/lib/utils";
 import {
   LayoutDashboard,
   FileText,
-  PieChart
+  PieChart,
+  ChevronRight,
+  LogOut
 } from "lucide-react";
+import { useAuthStore } from "@/store/authStore";
 
-export function DirectorSidebar() {
+interface DirectorSidebarProps {
+    className?: string;
+}
+
+export function DirectorSidebar({ className }: DirectorSidebarProps) {
   const location = useLocation();
+  const { logout, user } = useAuthStore();
 
   const menuItems = [
     {
@@ -28,41 +36,93 @@ export function DirectorSidebar() {
   ];
 
   return (
-    <div className="w-64 bg-slate-900 min-h-screen flex flex-col text-slate-100 flex-shrink-0">
-      <div className="p-6 border-b border-slate-800">
-        <h2 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-indigo-400 bg-clip-text text-transparent">
-          Direktur Portal
-        </h2>
-        <p className="text-xs text-slate-400 mt-1">Enterprise System</p>
+    <div className={cn("flex flex-col h-screen bg-gradient-to-b from-[#0F172A] to-[#1E293B] text-white shadow-2xl", className)}>
+      {/* Sidebar Header with Logo */}
+      <div className="h-20 flex items-center justify-center px-6 bg-black/10 border-b border-white/10 backdrop-blur-sm">
+         <div className="flex items-center gap-3">
+            <div className="bg-white/95 p-2 rounded-xl shadow-lg ring-2 ring-white/20 hover:scale-105 transition-transform">
+                <img 
+                    src="/logo.png" 
+                    alt="Logo" 
+                    className="h-9 w-9 object-contain"
+                />
+            </div>
+            <div>
+                <h1 className="font-bold text-xl tracking-tight leading-none text-white drop-shadow-sm">Enterprise</h1>
+                <p className="text-[11px] text-blue-300 uppercase tracking-widest font-bold mt-0.5">Portal Direktur</p>
+            </div>
+         </div>
       </div>
 
-      <nav className="flex-1 px-4 py-6 space-y-1">
-        {menuItems.map((item) => (
-          <Link
-            key={item.href}
-            to={item.href}
-            className={cn(
-              "flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-colors",
-              location.pathname === item.href
-                ? "bg-slate-800 text-white shadow-sm ring-1 ring-slate-700"
-                : "text-slate-400 hover:bg-slate-800 hover:text-white"
-            )}
-          >
-            <item.icon className={cn("h-4 w-4", location.pathname === item.href ? "text-blue-400" : "text-slate-500")} />
-            {item.title}
-          </Link>
-        ))}
-      </nav>
-
-      <div className="p-4 border-t border-slate-800">
-        <div className="flex items-center gap-3 bg-slate-800/50 p-3 rounded-lg border border-slate-800">
-          <div className="h-8 w-8 rounded-full bg-blue-500/20 flex items-center justify-center border border-blue-500/30">
-            <span className="font-bold text-blue-400 text-xs">DI</span>
-          </div>
-          <div className="overflow-hidden">
-            <p className="text-sm font-medium text-slate-200 truncate">Pimpinan</p>
-            <p className="text-xs text-slate-500 truncate">Direktur Utama</p>
-          </div>
+      {/* Navigation Menu */}
+      <div className="flex-1 overflow-y-auto py-6 px-3 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+        <nav className="space-y-1.5">
+            <div className="px-3 mb-3 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                Menu Utama
+            </div>
+            {menuItems.map((item) => {
+              const isActive = location.pathname === item.href;
+              return (
+                <Link
+                  key={item.href}
+                  to={item.href}
+                  className={cn(
+                    "flex items-center justify-between gap-3 rounded-xl px-4 py-3.5 text-[15px] font-medium transition-all duration-200 group relative overflow-hidden",
+                    isActive
+                      ? "bg-white/10 text-white shadow-lg backdrop-blur-sm ring-1 ring-white/10"
+                      : "text-slate-400 hover:bg-white/5 hover:text-white hover:shadow-md"
+                  )}
+                >
+                  <div className="flex items-center gap-3.5">
+                    {/* Icon with gradient background on active */}
+                    <div className={cn(
+                      "p-2 rounded-lg transition-all",
+                      isActive 
+                        ? "bg-gradient-to-br from-blue-500 to-indigo-600 shadow-md" 
+                        : "bg-white/5 group-hover:bg-white/10"
+                    )}>
+                      <item.icon className="h-[18px] w-[18px]" strokeWidth={2.5} />
+                    </div>
+                    <span className="relative font-semibold tracking-wide">{item.title}</span>
+                  </div>
+                  
+                  {/* Arrow indicator on hover/active */}
+                  <ChevronRight className={cn(
+                    "h-4 w-4 transition-all",
+                    isActive ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-2 group-hover:opacity-70 group-hover:translate-x-0"
+                  )} />
+                  
+                  {/* Active gradient overlay */}
+                  {isActive && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent opacity-50" />
+                  )}
+                </Link>
+              );
+            })}
+        </nav>
+      </div>
+      
+      {/* Sidebar Footer */}
+      <div className="p-4 border-t border-white/10 mt-auto">
+        <div className="flex items-center gap-3 p-3 rounded-xl bg-white/5 border border-white/5 hover:bg-white/10 transition-colors group">
+            <div className="h-10 w-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold shadow-lg ring-2 ring-white/10">
+                {user?.fullName?.charAt(0).toUpperCase() || "D"}
+            </div>
+            <div className="flex-1 min-w-0">
+                <p className="text-sm font-semibold text-white truncate">
+                    {user?.fullName || "Pimpinan"}
+                </p>
+                <p className="text-[11px] text-slate-400 truncate font-medium">
+                    {user?.role || "Direktur"}
+                </p>
+            </div>
+            <button 
+                onClick={() => logout()}
+                className="p-2 rounded-lg text-red-400 hover:bg-red-500/20 hover:text-red-200 transition-all opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0"
+                title="Sign Out"
+            >
+                <LogOut className="h-4 w-4" />
+            </button>
         </div>
       </div>
     </div>

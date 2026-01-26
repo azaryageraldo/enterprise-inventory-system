@@ -59,6 +59,9 @@ public class AuthController {
 
         System.out.println("DEBUG: Login successful for: " + user.getUsername());
         System.out.println("DEBUG: User Role: " + user.getRole().name());
+        if ("PIMPINAN".equals(user.getRole().name())) {
+            System.out.println("DEBUG: DIRECTOR ACCESS DETECTED. Token being generated.");
+        }
 
         // Record successful login
         activityLogService.recordLogin(user.getId(), user.getUsername(), ipAddress, userAgent, "SUCCESS");

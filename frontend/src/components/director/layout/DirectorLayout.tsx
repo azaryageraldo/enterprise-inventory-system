@@ -1,17 +1,45 @@
 import { Outlet } from "react-router-dom";
 import { DirectorSidebar } from "./DirectorSidebar";
 import { DirectorHeader } from "./DirectorHeader";
+import { DirectorFooter } from "./DirectorFooter";
+import { useState } from "react";
+import { cn } from "@/lib/utils";
 
 export default function DirectorLayout() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
   return (
-    <div className="flex h-screen bg-slate-50 overflow-hidden">
-      <DirectorSidebar />
-      <div className="flex-1 flex flex-col h-screen overflow-hidden">
-        <DirectorHeader />
-        <main className="flex-1 overflow-y-auto p-6 scroll-smooth">
-          <div className="max-w-7xl mx-auto space-y-6">
-            <Outlet />
+    <div className="min-h-screen bg-slate-50 flex font-sans">
+      {/* Sidebar - Desktop */}
+      <aside className="hidden lg:block w-72 fixed inset-y-0 z-50 shadow-xl">
+        <DirectorSidebar className="h-full w-72" />
+      </aside>
+
+      {/* Sidebar - Mobile Overlay */}
+      <div 
+        className={cn(
+            "fixed inset-0 z-50 bg-black/80 lg:hidden transition-opacity duration-300",
+            sidebarOpen ? "opacity-100" : "opacity-0 pointer-events-none"
+        )}
+        onClick={() => setSidebarOpen(false)}
+      />
+      <aside 
+        className={cn(
+            "fixed inset-y-0 left-0 z-50 w-72 bg-slate-900 transition-transform duration-300 lg:hidden shadow-2xl",
+            sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        )}
+      >
+        <DirectorSidebar className="h-full w-72" />
+      </aside>
+
+      {/* Main Content */}
+      <div className="flex-1 lg:pl-72 flex flex-col min-h-screen transition-all duration-300">
+        <DirectorHeader onMenuClick={() => setSidebarOpen(true)} />
+        <main className="flex-1 p-6 overflow-y-auto bg-slate-50/50 flex flex-col">
+          <div className="w-full animate-in fade-in duration-500 flex-1">
+             <Outlet />
           </div>
+          <DirectorFooter />
         </main>
       </div>
     </div>

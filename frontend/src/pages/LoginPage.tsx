@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/authStore";
 import { Button } from "@/components/ui/button";
@@ -15,8 +15,18 @@ export default function LoginPage() {
   const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
   
-  const { login, isLoading } = useAuthStore();
+  const { login, isLoading, isAuthenticated, user } = useAuthStore();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (isAuthenticated && user) {
+        if (user.role === "PIMPINAN") navigate("/director/dashboard");
+        else if (user.role === "ADMIN") navigate("/admin/dashboard");
+        else if (user.role === "PEGAWAI") navigate("/employee/dashboard");
+        else if (user.role === "ATASAN") navigate("/manager/dashboard");
+        else if (user.role === "KEUANGAN") navigate("/finance/dashboard");
+    }
+  }, [isAuthenticated, user, navigate]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -32,8 +42,12 @@ export default function LoginPage() {
       
       // Check role to determine redirect path
       const user = useAuthStore.getState().user;
-      console.log("Login success. User data:", user);
-      console.log("User role:", user?.role, "Type:", typeof user?.role);
+      console.log("DEBUG: Login success. User data:", user);
+      console.log("DEBUG: User role:", user?.role);
+      
+      if (user?.role === "PIMPINAN") {
+          console.log("DEBUG: Redirecting to /director/dashboard");
+      }
       
       if (user?.role === "ADMIN") {
         navigate("/admin/dashboard");

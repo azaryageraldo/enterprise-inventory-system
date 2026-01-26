@@ -30,49 +30,62 @@ public class DirectorController {
 
     @GetMapping("/dashboard")
     public ResponseEntity<?> getDashboardStats() {
-        LocalDateTime startOfMonth = YearMonth.now().atDay(1).atStartOfDay();
-        LocalDateTime endOfMonth = YearMonth.now().atEndOfMonth().atTime(23, 59, 59);
+        try {
+            System.out.println("DEBUG: Fetching Director Dashboard Stats...");
+            LocalDateTime startOfMonth = YearMonth.now().atDay(1).atStartOfDay();
+            LocalDateTime endOfMonth = YearMonth.now().atEndOfMonth().atTime(23, 59, 59);
 
-        // 1. Total Expenses This Month
-        BigDecimal totalExpensesMonth = financialRecordRepository.sumAmountByPaymentDateBetween(startOfMonth,
-                endOfMonth);
-        if (totalExpensesMonth == null)
-            totalExpensesMonth = BigDecimal.ZERO;
+            // 1. Total Expenses This Month
+            System.out.println("DEBUG: Calculating total expenses...");
+            BigDecimal totalExpensesMonth = financialRecordRepository.sumAmountByPaymentDateBetween(startOfMonth,
+                    endOfMonth);
+            if (totalExpensesMonth == null)
+                totalExpensesMonth = BigDecimal.ZERO;
 
-        // 2. Pending Approvals (Global)
-        // Since Pimpinan might want to know bottlenecks, we show all pending/approved
-        // but unpaid
-        long pendingApprovals = expenseRequestRepository.countByStatus(ExpenseStatus.PENDING);
-        long approvedUnpaid = expenseRequestRepository.countByStatus(ExpenseStatus.APPROVED);
+            // 2. Pending Approvals (Global)
+            System.out.println("DEBUG: Counting pending approvals...");
+            long pendingApprovals = expenseRequestRepository.countByStatus(ExpenseStatus.PENDING);
+            long approvedUnpaid = expenseRequestRepository.countByStatus(ExpenseStatus.APPROVED);
 
-        // 3. Total Stock Value (Capital in Inventory)
-        // We need a method in ItemRepository for this: SUM(stock * price)
-        BigDecimal totalStockValue = itemRepository.getTotalStockValue();
-        if (totalStockValue == null)
-            totalStockValue = BigDecimal.ZERO;
+            // 3. Total Stock Value (Capital in Inventory)
+            System.out.println("DEBUG: Calculating total stock value...");
+            BigDecimal totalStockValue = itemRepository.getTotalStockValue();
+            if (totalStockValue == null)
+                totalStockValue = BigDecimal.ZERO;
 
-        // 4. Recent Financial Activity
-        List<FinancialRecord> recentTransactions = financialRecordRepository.findTop5ByOrderByPaymentDateDesc();
+            // 4. Recent Financial Activity
+            System.out.println("DEBUG: Fetching recent transactions...");
+            List<FinancialRecord> recentTransactions = financialRecordRepository.findTop5ByOrderByPaymentDateDesc();
 
-        Map<String, Object> stats = new HashMap<>();
-        stats.put("totalExpensesMonth", totalExpensesMonth);
-        stats.put("pendingApprovals", pendingApprovals); // Menunggu Approval Atasan
-        stats.put("approvedUnpaid", approvedUnpaid); // Menunggu Pembayaran Finance
-        stats.put("totalStockValue", totalStockValue);
+            Map<String, Object> stats = new HashMap<>();
+            stats.put("totalExpensesMonth", totalExpensesMonth);
+            stats.put("pendingApprovals", pendingApprovals); // Menunggu Approval Atasan
+            stats.put("approvedUnpaid", approvedUnpaid); // Menunggu Pembayaran Finance
+            stats.put("totalStockValue", totalStockValue);
 
-        List<Map<String, Object>> recentActivity = recentTransactions.stream().map(r -> {
-            Map<String, Object> map = new HashMap<>();
-            map.put("id", r.getId());
-            map.put("transactionNumber", r.getTransactionNumber());
-            map.put("amount", r.getAmount());
-            map.put("date", r.getPaymentDate());
-            map.put("purpose", r.getExpenseRequest().getPurpose());
-            map.put("division", r.getExpenseRequest().getUser().getDivision().getName());
-            return map;
-        }).collect(Collectors.toList());
+            System.out.println("DEBUG: Mapping recent transactions...");
+            List<Map<String, Object>> recentActivity = recentTransactions.stream().map(r -> {
+                Map<String, Object> map = new HashMap<>();
+                map.put("id", r.getId());
+                map.put("transactionNumber", r.getTransactionNumber());
+                map.put("amount", r.getAmount());
+                map.put("date", r.getPaymentDate());
+                map.put("purpose", r.getExpenseRequest().getPurpose());
+                try {
+                    map.put("division", r.getExpenseRequest().getUser().getDivision().getName());
+                } catch (NullPointerException npe) {
+                    map.put("division", "Unknown");
+                }
+                return map;
+            }).collect(Collectors.toList());
 
-        stats.put("recentActivity", recentActivity);
+            stats.put("recentActivity", recentActivity);
+            System.out.println("DEBUG: Director Dashboard Stats Ready.");
 
-        return ResponseEntity.ok(stats);
+            return ResponseEntity.ok(stats);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body("Error fetching director dashboard: " + e.getMessage());
+        }
     }
 }
