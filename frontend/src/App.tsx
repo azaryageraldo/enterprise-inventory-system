@@ -26,6 +26,10 @@ import FinanceDashboard from "@/pages/finance/FinanceDashboard";
 import FinanceApprovedPage from "@/pages/finance/FinanceApprovedPage";
 import FinanceTransactionPage from "@/pages/finance/FinanceTransactionPage";
 import FinanceReportPage from "@/pages/finance/FinanceReportPage";
+import DirectorLayout from "@/components/director/layout/DirectorLayout";
+import DirectorDashboard from "@/pages/director/DirectorDashboard";
+import DirectorReportStockPage from "@/pages/director/DirectorReportStockPage";
+import DirectorReportExpensePage from "@/pages/director/DirectorReportExpensePage";
 
 function App() {
   return (
@@ -108,6 +112,23 @@ function App() {
              <Route path="expenses/approved" element={<FinanceApprovedPage />} />
              <Route path="transactions" element={<FinanceTransactionPage />} />
              <Route path="reports" element={<FinanceReportPage />} />
+             <Route path="transactions" element={<FinanceTransactionPage />} />
+             <Route path="reports" element={<FinanceReportPage />} />
+        </Route>
+
+        {/* Director Routes */}
+        <Route
+            path="/director"
+            element={
+                <ProtectedRoute>
+                    <DirectorLayout />
+                </ProtectedRoute>
+            }
+        >
+             <Route index element={<Navigate to="/director/dashboard" replace />} />
+             <Route path="dashboard" element={<DirectorDashboard />} />
+             <Route path="reports/stock" element={<DirectorReportStockPage />} />
+             <Route path="reports/expenses" element={<DirectorReportExpensePage />} />
         </Route>
 
         

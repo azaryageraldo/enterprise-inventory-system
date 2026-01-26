@@ -43,6 +43,8 @@ export default function LoginPage() {
         navigate("/manager/dashboard");
       } else if (user?.role === "KEUANGAN") {
         navigate("/finance/dashboard");
+      } else if (user?.role === "PIMPINAN") {
+        navigate("/director/dashboard");
       } else {
         navigate("/dashboard"); // Fallback
       }
@@ -205,6 +207,7 @@ export default function LoginPage() {
                 <div className="p-2 bg-muted rounded">pegawai / 12345</div>
                 <div className="p-2 bg-muted rounded">atasan / 12345</div>
                 <div className="p-2 bg-muted rounded">keuangan / 12345</div>
+                <div className="p-2 bg-muted rounded col-span-2">pimpinan / 12345</div>
               </div>
           </div>
         </div>

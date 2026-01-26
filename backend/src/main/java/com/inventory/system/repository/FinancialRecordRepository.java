@@ -19,4 +19,7 @@ public interface FinancialRecordRepository extends JpaRepository<FinancialRecord
     List<FinancialRecord> findTop5ByOrderByPaymentDateDesc();
 
     long countByPaymentDateBetween(LocalDateTime start, LocalDateTime end);
+
+    @org.springframework.data.jpa.repository.Query("SELECT f.expenseRequest.user.division.name, SUM(f.amount) FROM FinancialRecord f GROUP BY f.expenseRequest.user.division.name")
+    List<Object[]> sumExpensesByDivision();
 }

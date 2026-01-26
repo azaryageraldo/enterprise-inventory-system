@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } f
 import { format } from "date-fns";
 import { id as localeId } from "date-fns/locale";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle2, XCircle, Clock, Banknote, FileText, ExternalLink } from "lucide-react";
+import { CheckCircle2, XCircle, Clock, Banknote, ExternalLink } from "lucide-react";
 
 interface DetailExpenseDialogProps {
     open: boolean;

@@ -11,4 +11,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     @org.springframework.data.jpa.repository.Query("SELECT SUM(i.stock) FROM Item i")
     Long sumTotalStock();
+
+    @org.springframework.data.jpa.repository.Query("SELECT SUM(i.stock * i.price) FROM Item i")
+    java.math.BigDecimal getTotalStockValue();
 }
