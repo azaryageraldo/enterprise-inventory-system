@@ -8,6 +8,7 @@ import {
     BarChart, Bar, XAxis, YAxis, CartesianGrid
 } from "recharts";
 import { Badge } from "@/components/ui/badge";
+import { Breadcrumb } from "@/components/Breadcrumb";
 
 const COLORS = ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#6366F1'];
 
@@ -19,9 +20,7 @@ export default function DirectorReportExpensePage() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await axios.get("/director/reports/expenses", {
-                    headers: { Authorization: `Bearer ${token}` }
-                });
+                const response = await axios.get("/director/reports/expenses");
                 setData(response.data);
             } catch (error) {
                 console.error("Failed to fetch expense reports", error);
@@ -60,6 +59,13 @@ export default function DirectorReportExpensePage() {
 
     return (
         <div className="space-y-8 animate-in fade-in duration-500">
+            <Breadcrumb 
+                items={[
+                    { label: "Dashboard", href: "/director/dashboard" }, 
+                    { label: "Laporan Keuangan" }
+                ]} 
+                homeLink="/director/dashboard"
+            />
             {/* Header Section */}
             <div>
                 <h1 className="text-3xl font-bold tracking-tight text-slate-900">Laporan Keuangan & Pengeluaran</h1>

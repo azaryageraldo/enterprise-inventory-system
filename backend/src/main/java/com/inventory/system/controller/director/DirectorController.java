@@ -49,9 +49,9 @@ public class DirectorController {
 
             // 3. Total Stock Value (Capital in Inventory)
             System.out.println("DEBUG: Calculating total stock value...");
-            BigDecimal totalStockValue = itemRepository.getTotalStockValue();
+            Double totalStockValue = itemRepository.getTotalStockValue();
             if (totalStockValue == null)
-                totalStockValue = BigDecimal.ZERO;
+                totalStockValue = 0.0;
 
             // 4. Recent Financial Activity
             System.out.println("DEBUG: Fetching recent transactions...");

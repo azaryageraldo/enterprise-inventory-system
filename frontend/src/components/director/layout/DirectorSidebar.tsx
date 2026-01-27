@@ -5,7 +5,8 @@ import {
   FileText,
   PieChart,
   ChevronRight,
-  LogOut
+  LogOut,
+  Activity
 } from "lucide-react";
 import { useAuthStore } from "@/store/authStore";
 
@@ -32,6 +33,11 @@ export function DirectorSidebar({ className }: DirectorSidebarProps) {
       title: "Laporan Keuangan",
       icon: PieChart,
       href: "/director/reports/expenses",
+    },
+    {
+      title: "Laporan Keseluruhan",
+      icon: Activity,
+      href: "/director/reports/general",
     },
   ];
 

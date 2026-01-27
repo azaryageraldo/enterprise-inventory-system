@@ -13,5 +13,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Long sumTotalStock();
 
     @org.springframework.data.jpa.repository.Query("SELECT SUM(i.stock * i.price) FROM Item i")
-    java.math.BigDecimal getTotalStockValue();
+    Double getTotalStockValue();
+
+    @org.springframework.data.jpa.repository.Query("SELECT i.category.name, SUM(i.stock * i.price) FROM Item i GROUP BY i.category.name")
+    java.util.List<Object[]> sumAssetValueByCategory();
 }

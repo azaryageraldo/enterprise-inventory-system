@@ -23,7 +23,7 @@ public interface FinancialRecordRepository extends JpaRepository<FinancialRecord
     @org.springframework.data.jpa.repository.Query("SELECT f.expenseRequest.user.division.name, SUM(f.amount) FROM FinancialRecord f GROUP BY f.expenseRequest.user.division.name")
     List<Object[]> sumExpensesByDivision();
 
-    @org.springframework.data.jpa.repository.Query("SELECT FUNCTION('YEAR', f.paymentDate) as year, FUNCTION('MONTH', f.paymentDate) as month, SUM(f.amount) as total FROM FinancialRecord f GROUP BY FUNCTION('YEAR', f.paymentDate), FUNCTION('MONTH', f.paymentDate) ORDER BY year DESC, month DESC")
+    @org.springframework.data.jpa.repository.Query("SELECT EXTRACT(YEAR FROM f.paymentDate), EXTRACT(MONTH FROM f.paymentDate), SUM(f.amount) FROM FinancialRecord f GROUP BY EXTRACT(YEAR FROM f.paymentDate), EXTRACT(MONTH FROM f.paymentDate) ORDER BY 1 DESC, 2 DESC")
     List<Object[]> sumExpensesGroupedByMonth();
 
     @org.springframework.data.jpa.repository.Query("SELECT SUM(f.amount) FROM FinancialRecord f")

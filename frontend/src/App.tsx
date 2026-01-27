@@ -30,6 +30,7 @@ import DirectorLayout from "@/components/director/layout/DirectorLayout";
 import DirectorDashboard from "@/pages/director/DirectorDashboard";
 import DirectorReportStockPage from "@/pages/director/DirectorReportStockPage";
 import DirectorReportExpensePage from "@/pages/director/DirectorReportExpensePage";
+import DirectorReportGeneralPage from "@/pages/director/DirectorReportGeneralPage";
 
 function App() {
   return (
@@ -129,6 +130,7 @@ function App() {
              <Route path="dashboard" element={<DirectorDashboard />} />
              <Route path="reports/stock" element={<DirectorReportStockPage />} />
              <Route path="reports/expenses" element={<DirectorReportExpensePage />} />
+             <Route path="reports/general" element={<DirectorReportGeneralPage />} />
         </Route>
 
         

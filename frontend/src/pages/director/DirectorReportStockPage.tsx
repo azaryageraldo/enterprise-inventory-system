@@ -6,6 +6,7 @@ import { Loader2, AlertTriangle, TrendingUp, Package } from "lucide-react";
 import axios from "@/lib/api";
 import { useAuthStore } from "@/store/authStore";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Breadcrumb } from "@/components/Breadcrumb";
 
 export default function DirectorReportStockPage() {
     const { token } = useAuthStore();
@@ -72,6 +73,13 @@ export default function DirectorReportStockPage() {
 
     return (
         <div className="space-y-6">
+            <Breadcrumb 
+                items={[
+                    { label: "Dashboard", href: "/director/dashboard" }, 
+                    { label: "Laporan Stok" }
+                ]} 
+                homeLink="/director/dashboard"
+            />
             <div>
                 <h1 className="text-2xl font-bold tracking-tight text-slate-900">Laporan Stok & Inventaris</h1>
                 <p className="text-slate-500">Analisis pergerakan barang dan status persediaan.</p>
