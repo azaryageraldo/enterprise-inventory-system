@@ -124,10 +124,10 @@ Endpoint dikelompokkan berdasarkan role dan fitur fungsional. Dokumentasi lengka
 - **Halaman Login & Autentikasi**  
   ![Login Screen](asset/login.png)
 
-- **Dashboard Pegawai (Staff)**  
-  ![Dashboard Pegawai](asset/pegawai.png)
+- **Dashboard Admin**  
+  ![Dashboard Admin](asset/admin.png)
 
-- **Dashboard Admin/Staf**  
+- **Dashboard Staf**  
   ![Dashboard Staf](asset/staf.png)
 
 - **Dashboard Atasan (Manager)**  
