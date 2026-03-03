@@ -24,3 +24,8 @@ logs/
 # Environment Variables
 .env
 .env.local
+
+# Excluded project documents
+READINESS_ANALYSIS.md
+modul.txt
+konsep-warna-sistem.txt

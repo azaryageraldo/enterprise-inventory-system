@@ -33,7 +33,7 @@ export default function LoginPage() {
     setError("");
 
     if (!username || !password) {
-      setError("Please fill in all fields");
+      setError("Harap isi semua kolom");
       return;
     }
 
@@ -63,7 +63,7 @@ export default function LoginPage() {
         navigate("/dashboard"); // Fallback
       }
     } catch (err: any) {
-      setError(err.response?.data?.message || "Invalid credentials. Please try again.");
+      setError(err.response?.data?.message || "Kredensial tidak valid. Silakan coba lagi.");
     }
   };
 
@@ -90,8 +90,8 @@ export default function LoginPage() {
              Enterprise Inventory & Financial Management
            </h1>
            <p className="text-lg opacity-90">
-             Streamline your operations with our integrated solution for total business control. 
-             Efficient, Reliable, and Secure.
+             Optimalkan operasional Anda dengan solusi terintegrasi untuk kontrol bisnis total. 
+             Efisien, Andal, dan Aman.
            </p>
         </div>
 
@@ -114,10 +114,10 @@ export default function LoginPage() {
             </div>
             
             <h1 className="text-3xl font-bold tracking-tight text-foreground">
-              Welcome Back
+              Selamat Datang Kembali
             </h1>
             <p className="text-sm text-muted-foreground">
-              Enter your credentials to access your account
+              Masukkan kredensial Anda untuk mengakses akun
             </p>
           </div>
 
@@ -129,11 +129,11 @@ export default function LoginPage() {
             )}
 
             <div className="space-y-2">
-              <Label htmlFor="username">Username</Label>
+              <Label htmlFor="username">Nama Pengguna</Label>
               <Input
                 id="username"
                 type="text"
-                placeholder="Ex. admin, pegawai..."
+                placeholder="Cth. admin, pegawai..."
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
                 disabled={isLoading}
@@ -143,7 +143,7 @@ export default function LoginPage() {
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">Kata Sandi</Label>
                 <a href="#" className="text-sm font-medium text-primary hover:underline">
                 
                 </a>
@@ -152,7 +152,7 @@ export default function LoginPage() {
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
-                  placeholder="Enter your password"
+                  placeholder="Masukkan kata sandi Anda"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   disabled={isLoading}
@@ -183,7 +183,7 @@ export default function LoginPage() {
                 htmlFor="remember"
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
-                Remember me for 30 days
+                Ingat saya
               </label>
             </div>
 
@@ -195,11 +195,11 @@ export default function LoginPage() {
               {isLoading ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Authenticating...
+                  Memproses...
                 </>
               ) : (
                 <span className="flex items-center justify-center gap-2">
-                  Sign In <ArrowRight className="h-4 w-4" />
+                  Masuk <ArrowRight className="h-4 w-4" />
                 </span>
               )}
             </Button>
@@ -212,7 +212,7 @@ export default function LoginPage() {
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-background px-2 text-muted-foreground">
-                    Demo Access
+                    Akses Demo
                   </span>
                 </div>
               </div>
