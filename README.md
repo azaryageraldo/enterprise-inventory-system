@@ -121,15 +121,23 @@ Endpoint dikelompokkan berdasarkan role dan fitur fungsional. Dokumentasi lengka
 
 ## 📸 Preview/Screenshots
 
-> _Tambahkan tautan gambar screenshot antarmuka sistem di bawah ini_
-
 - **Halaman Login & Autentikasi**  
-  ![Login Screen](https://placehold.co/600x400?text=Login+Screen)
-- **Dashboard Direktur Utama (Pimpinan)**  
-  ![Director Dashboard](https://placehold.co/600x400?text=Director+Dashboard)
+  ![Login Screen](asset/login.png)
 
-- **Laporan Keseluruhan Keuangan & Stok**  
-  ![General Report](https://placehold.co/600x400?text=General+Report)
+- **Dashboard Pegawai (Staff)**  
+  ![Dashboard Pegawai](asset/pegawai.png)
+
+- **Dashboard Admin/Staf**  
+  ![Dashboard Staf](asset/staf.png)
+
+- **Dashboard Atasan (Manager)**  
+  ![Dashboard Atasan](asset/atasan.png)
+
+- **Dashboard Keuangan (Finance)**  
+  ![Dashboard Keuangan](asset/keuangan.png)
+
+- **Dashboard Direktur Utama (Pimpinan)**  
+  ![Dashboard Pimpinan](asset/pimpinan.png)
 
 ## ✍️ Author
 
